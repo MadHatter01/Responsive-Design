@@ -3,7 +3,15 @@ if(!('Notification' in window)){
     alert('Browser does not support notifications');
     return;
 }
-console.log('permitted')
+if(Notification.permission === 'granted'){
+    showNotification();
+} else if(Notification.permission !== 'denied'){
+    Notification.requestPermission().then(permission =>{
+        if(permission === 'granted'){
+            showNotification();
+        }
+    })
+}
 });
 
 
