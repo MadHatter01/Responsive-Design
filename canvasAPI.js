@@ -26,6 +26,22 @@ const createShape = (x, y)=>{
 }
 
 
+const updateShapes=()=>{
+    for (const shape of shapes){
+
+        shape.x += shape.dx;
+                shape.y += shape.dy;
+                if (shape.x + shape.size > canvas.width || shape.x - shape.size < 0) {
+                    shape.dx = -shape.dx;
+                }
+                if (shape.y + shape.size > canvas.height || shape.y - shape.size < 0) {
+                    shape.dy = -shape.dy;
+                }
+            }
+        }
+
+
+
 canvas.addEventListener('click', (event)=>{
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -33,3 +49,13 @@ canvas.addEventListener('click', (event)=>{
     createShape(x,y);
     drawShape();
 })
+
+
+
+function animate(){
+updateShapes();
+drawShape();
+requestAnimationFrame(animate);
+}
+
+animate();
