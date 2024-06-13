@@ -9,15 +9,35 @@ document.addEventListener('DOMContentLoaded', ()=>{
         todoList.innerHTML = '';
         tasks.forEach((task, index)=>{
             const li = document.createElement('li');
-            li.innerHTML = `<p>${task.text}</p>`;
+            li.className = task.completed ? 'completed':'';
+            li.innerHTML = `<p>${task.text}</p>
+            <div><button onclick="complete(${index})">${task.completed ? 'Undo':'Complete'}</button>
+            <button onclick="deleteTask(${index})">Delete</button>
+            </div>
+            `;
             todoList.append(li);
         })
     }
 
+
+    window.complete = function(index){
+        tasks[index].completed = !tasks[index].completed;
+    
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        getTasks();
+    }
+    
+    window.deleteTask = function(index){
+        tasks.splice(index,1);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        getTasks();
+
+    }
     const addTask= (e)=>{
         e.preventDefault();
         const newTask = {
-            text: todoItem.value
+            text: todoItem.value,
+            completed:false
         }
         tasks.push(newTask);
         getTasks();
