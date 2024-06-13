@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
             const li = document.createElement('li');
             li.className = task.completed ? 'completed':'';
             li.innerHTML = `<p>${task.text}</p>
-            <div><button onclick="complete(${index})">${task.completed ? 'Undo':'Complete'}</button>
-            <button onclick="deleteTask(${index})">Delete</button>
+            <div><button class="completeBtn" onclick="complete(${index})">${task.completed ? 'Undo':'Complete'}</button>
+            <button class="deleteBtn" onclick="deleteTask(${index})">Delete</button>
             </div>
             `;
             todoList.append(li);
