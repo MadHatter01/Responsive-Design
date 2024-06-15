@@ -4,9 +4,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const ctx = canvas.getContext('2d');
     const colorPicker = document.getElementById('colorPicker');
     const shapeSelect = document.getElementById('shapeSelect');
-
+    let shapeType = 'circle';
     let shape = {
-        type:'circle',
+        type:shapeType,
         x:100,
         y:100,
         width:200,
@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     let selectedShape = null;
 
+
+    shapeSelect.addEventListener('change', (e)=>{
+        shape.type = e.target.value;
+        drawShape(colorPicker.value);
+    })
 
     const drawShape = (color)=>{
         ctx.clearRect(0,0,canvas.width, canvas.height);
