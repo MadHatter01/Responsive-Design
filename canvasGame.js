@@ -35,8 +35,31 @@ switch(event.key){
         break;
 
 }
-})
+});
 
+
+const obstacles = [];
+const obstacleCount = 3;
+
+const obstacleWidth = 20;
+const obstacleHeight = 20;
+
+for (let i = 0; i < obstacleCount; i++){
+    obstacles.push({
+        x: Math.random() * (canvas.width - obstacleWidth),
+        y: Math.random() * (canvas.height - obstacleHeight),
+        width: obstacleWidth,
+        height:obstacleHeight,
+        color:'red'
+    });
+}
+
+const drawObstacles = ()=>{
+    obstacles.forEach(obstacle =>{
+        context.fillStyle = obstacle.color;
+        context.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+    })
+}
 
 
 const clearCanvas = ()=>{
@@ -46,6 +69,7 @@ const clearCanvas = ()=>{
 const animate = ()=>{
     clearCanvas();
     drawCharacter();
+    drawObstacles();
     requestAnimationFrame(animate);
 }
 
