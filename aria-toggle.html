@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessiblty example</title>
+    <style>
+        #content{
+            display:none;
+        }
+    </style>
+</head>
+<body>
+    <button id="toggleBtn" aria-expanded="false" aria-controls="content">Show Content</button>
+    
+    <div id="content" role="region" aria-labelledby="toggleBtn">
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nam praesentium obcaecati tempora aut optio, quis possimus fugiat sit, minus earum error, iste nihil hic. Veniam voluptatibus officia architecto illo perferendis?</p>
+    </div>
+    <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        const content = document.getElementById('content');
+
+        toggleBtn.addEventListener('click', ()=>{
+            const isOpen = toggleBtn.getAttribute('aria-expanded') === 'true';
+            toggleBtn.setAttribute('aria-expanded', !isOpen);
+            content.style.display = isOpen ? 'none': 'block';
+            toggleBtn.textContent = isOpen ? 'Show Content' : 'Hide Content';
+        })
+    </script>
+</body>
+</html>
