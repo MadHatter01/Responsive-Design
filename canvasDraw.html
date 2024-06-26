@@ -10,9 +10,29 @@
 
     <script>
         const canvas = document.getElementById('myCanvas');
-        const context = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        console.log(audioCtx)
-    </script>
+        const playTone = (frequency) => {
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+            oscillator.start();
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1);
+            oscillator.stop(audioCtx.currentTime + 1);
+        };
+
+        window.addEventListener('keydown', (event)=>{
+            if(event.key==='ArrowUp'){
+                playTone(261.63)
+            }
+        })
+       
+
+      </script>
 </body>
 </html>
