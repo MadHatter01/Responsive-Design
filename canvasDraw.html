@@ -9,6 +9,7 @@
     <canvas id="myCanvas" width="800" height="600"></canvas>
 
     <script>
+
         const canvas = document.getElementById('myCanvas');
         const ctx = canvas.getContext('2d');
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -26,10 +27,26 @@
             oscillator.stop(audioCtx.currentTime + 1);
         };
 
+        // Music frequencies references https://mixbutton.com/mixing-articles/music-note-to-frequency-chart/
         window.addEventListener('keydown', (event)=>{
-            if(event.key==='ArrowUp'){
-                playTone(261.63)
+            switch(event.key){
+                case 'ArrowUp':
+                playTone(261.63);
+                break;
+
+                case 'ArrowDown':
+                playTone(293.66);
+                break;
+
+                case 'ArrowLeft':
+                playTone(329.63);
+                break;
+
+                case 'ArrowRight':
+                playTone(349.23);
+                break;
             }
+         
         })
        
 
