@@ -29,16 +29,39 @@
 
 
         const colors = ['#6c5ce7','#0984e3','#fdcb6e','#78e08f']
+        let shapes = []
         let colorIndex = 0;
         let x = canvas.width/2;
         let y = canvas.height/2;
-        const drawShape = (x , y)=>{
+        let lastCircle = null;
+        const drawShape = (x , y, opacity=1)=>{
+            ctx.globalAlpha = opacity;
             ctx.beginPath();
             ctx.arc(x,y,45,0,Math.PI*2,false);
             ctx.fillStyle = colors[colorIndex];
             ctx.fill();
+            ctx.globalAlpha = 1
             colorIndex = (colorIndex + 1) % colors.length;
+            
+            shapes.push()
 
+        }
+
+        const fader = (x,y)=>{
+            let opacity = 1;
+            const fading = ()=>{
+                ctx.clearRect(0,0, canvas.width, canvas.height);
+                drawShape(x,y,opacity);
+                opacity -=0.02;
+                if (opacity > 0){
+                    requestAnimationFrame(fading)
+                }
+                else{
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    lastCircle = null;
+                }
+            }
+            fading();
         }
 
         // Music frequencies references https://mixbutton.com/mixing-articles/music-note-to-frequency-chart/
@@ -66,9 +89,13 @@
                 break;
             }
             drawShape(x,y);
+      
+            setTimeout(() => {
+                fader(x, y);
+            }, 100); // Delay the fade-out by 2 seconds
          
         })
-       
+       drawShape(x,y);
 
       </script>
 </body>
