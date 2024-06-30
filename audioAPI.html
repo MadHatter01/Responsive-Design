@@ -34,7 +34,29 @@
     <div class="note" data-frequency="261.63">C</div>
     
     <script>
+        const audioctx = new (window.AudioContext|| window.webkitAudioContext)
 
+        const playNote = ((frequency)=>{
+            const oscillator = audioctx.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(frequency, audioctx.currentTime);
+            
+            const gainNode = audioctx.createGain();
+            gainNode.gain.setValueAtTime(1, audioctx.currentTime);
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioctx.destination);
+
+            oscillator.start();
+            oscillator.stop(audioctx.currentTime + 1);
+        })
+
+        document.querySelectorAll('.note').forEach(note => {
+            note.addEventListener('click', ()=>{
+                const frequency = parseFloat(note.getAttribute('data-frequency'));
+                playNote(frequency);
+            })
+        } )
     </script>
 </body>
 </html>
