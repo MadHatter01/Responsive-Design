@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Status</title>
+    <style>
+        #character{
+            position:absolute;
+            width:50px;
+            height:50px;
+            top:25px;
+            background-color:black;
+            transition:left 0.5s ease, background-color 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="character"></div>
+    </div>
+    <div class = "status" id="chargingStatus">Charging Status: </div>
+    <div class = "status" id="batteryLevel">Battery Level: </div>
+    
+
+    <script>
+        const character = document.getElementById('character');
+        const batteryLevels = (battery)=>{
+            const batteryLevel = battery.level*100;
+            document.getElementById('batteryLevel').textContent = `Battery Level : ${Math.round(battery.level*100)}`;
+            if (batteryLevel > 80){
+                character.style.backgroundColor = 'green'
+            }
+            else if(batteryLevel > 50){
+                character.style.backgroundColor = 'yellowgreen'
+            }
+            else if(batteryLevel > 25){
+                character.style.backgroundColor = 'orange'
+            }
+            else{
+                character.style.backgroundColor = 'red'
+            }
+        }
+
+        if (navigator.getBattery){
+            navigator.getBattery().then(function(battery){
+                batteryLevels(battery);
+                battery.addEventListener('levelChange', ()=>{
+                    batteryLevels(battery);
+                })
+            })
+
+
+        }
+        else{
+            alert('Battery API not supported')
+        }
+    </script>
+</body>
+</html>
