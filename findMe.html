@@ -1,72 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find me</title>
     <style>
-        html, body{
-            width:100%;
-            height:100%;
-            margin:0;
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
         }
-        #dark-container{
-            background:black;
-            width:100%;
-            height:100%;
-            position:relative;
+
+        #dark-container {
+            background: black;
+            width: 100%;
+            height: 100%;
+            position: relative;
         }
-        #cat{
-            position:absolute;
-            display:none;
-            width:64px;
-            height:64px;
+
+        #cat {
+            position: absolute;
+            display: block;
+            width: 64px;
+            height: 64px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
-        #light{
+
+        #light {
             background: radial-gradient(circle, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 60%);
-            width:100px;
-            height:100px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
             pointer-events: none;
-            position:absolute;
+            position: absolute;
         }
     </style>
 </head>
+
 <body>
     <div id="dark-container">
         <div id="light"></div>
         <svg id="cat" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-            <circle cx="32" cy="32" r="30" fill="orange"/>
-            <circle cx="24" cy="24" r="5" fill="white"/>
-            <circle cx="40" cy="24" r="5" fill="white"/>
-            <circle cx="24" cy="24" r="2" fill="black"/>
-            <circle cx="40" cy="24" r="2" fill="black"/>
-            <polygon points="32,40 28,48 36,48" fill="black"/>
+            <circle cx="32" cy="32" r="30" fill="orange" />
+            <circle cx="24" cy="24" r="5" fill="white" />
+            <circle cx="40" cy="24" r="5" fill="white" />
+            <circle cx="24" cy="24" r="2" fill="black" />
+            <circle cx="40" cy="24" r="2" fill="black" />
+            <polygon points="32,40 28,48 36,48" fill="black" />
         </svg>
     </div>
     <script>
-        const cat = document.getElementById('cat');
-        const light = document.getElementById('light');
 
-        const moveLight=(e)=>{
-            light.style.left= `${e.clientX - 50}px`;
-            light.style.top= `${e.clientY - 50}px`;
-        }
+        document.addEventListener('DOMContentLoaded', (event) =>{
+            const cat = document.getElementById('cat');
+            const light = document.getElementById('light');
+            const dp = document.getElementById('dark-container');
 
-        document.addEventListener('mousemove', moveLight)
 
-        const placeCat= ()=>{
-            const pageWidth = window.innerWidth;
-            const pageHeight = window.innerHeight;
-            const catX = Math.random() * (pageWidth - 64);
-            const catY = Math.random() * (pageHeight -64);
-            cat.style.left = `${catX}px`;
-            cat.style.top = `${catY}px`;
-            cat.style.display='none';
-        }
-        placeCat();
-        
+            const moveLight = (e) => {
+                light.style.left = `${e.clientX - 100}px`;
+                light.style.top = `${e.clientY - 100}px`;
+                checkIntersection();
+            }
+
+            const checkIntersection = () => {
+                const lightRect = light.getBoundingClientRect();
+                const catRect = cat.getBoundingClientRect();
+                const isIntersect = !(lightRect.right < catRect.left || lightRect.left > catRect.right || 
+                                    lightRect.bottom < catRect.top || lightRect.top > catRect.bottom);
+            
+                if (isIntersect){
+                    cat.style.opacity = 1;
+                    dp.style.backgroundColor = 'white';
+                    setTimeout(()=>{
+                        location.reload();
+                    },1500);
+                }
+
+                }
+
+            document.addEventListener('mousemove', moveLight)
+
+            const placeCat = () => {
+                const pageWidth = window.innerWidth;
+                const pageHeight = window.innerHeight;
+                const catX = Math.random() * (pageWidth - 64);
+                const catY = Math.random() * (pageHeight - 64);
+                cat.style.left = `${catX}px`;
+                cat.style.top = `${catY}px`;
+            }
+            placeCat();
+        });
     </script>
-    
+
 </body>
+
 </html>
